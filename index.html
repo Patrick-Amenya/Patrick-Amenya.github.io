@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Daily Pulse — News & Insights</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a1a;
+    --ink-light: #555;
+    --ink-faint: #999;
+    --paper: #faf8f4;
+    --white: #ffffff;
+    --accent: #c0392b;
+    --accent-dark: #922b21;
+    --gold: #d4a017;
+    --border: #e0dcd4;
+    --ad-bg: #f0ede6;
+  }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--ink);
+    color: #ccc;
+    font-size: 12px;
+    text-align: center;
+    padding: 6px 16px;
+    letter-spacing: 0.5px;
+  }
+  .topbar span { color: var(--gold); font-weight: 600; }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--white);
+    border-bottom: 3px solid var(--ink);
+    padding: 24px 16px 16px;
+    text-align: center;
+  }
+  .site-tagline {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .site-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 7vw, 72px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .site-title span { color: var(--accent); }
+  .site-date {
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-top: 8px;
+    letter-spacing: 1px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--ink);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  nav a {
+    color: #ddd;
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    transition: background 0.2s, color 0.2s;
+    font-weight: 600;
+  }
+  nav a:hover { background: var(--accent); color: #fff; }
+  nav a.active { color: var(--gold); }
+
+  /* ── AD BANNER ── */
+  .ad-banner {
+    background: var(--ad-bg);
+    border: 1.5px dashed var(--border);
+    text-align: center;
+    padding: 20px 16px;
+    margin: 20px auto;
+    max-width: 960px;
+    border-radius: 4px;
+    position: relative;
+  }
+  .ad-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    position: absolute;
+    top: 6px;
+    left: 10px;
+  }
+  .ad-banner-inner {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: #fff;
+    padding: 20px 32px;
+    border-radius: 3px;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .ad-banner-inner .ad-cta {
+    background: var(--gold);
+    color: var(--ink);
+    padding: 8px 20px;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  .layout { display: grid; grid-template-columns: 1fr 300px; gap: 40px; padding: 32px 0; }
+
+  /* ── HERO STORY ── */
+  .hero-story {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 0;
+    border: 1.5px solid var(--ink);
+    margin-bottom: 32px;
+    background: var(--white);
+  }
+  .hero-image {
+    background: linear-gradient(160deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    min-height: 360px;
+    display: flex;
+    align-items: flex-end;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 41px);
+  }
+  .hero-category-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    font-weight: 700;
+  }
+  .hero-visual-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.08);
+    line-height: 1;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    text-align: right;
+  }
+  .hero-content { padding: 32px 28px; display: flex; flex-direction: column; justify-content: center; }
+  .hero-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  .hero-excerpt { font-size: 15px; color: var(--ink-light); margin-bottom: 18px; line-height: 1.7; }
+  .read-more {
+    display: inline-block;
+    background: var(--ink);
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 600;
+    align-self: flex-start;
+    transition: background 0.2s;
+  }
+  .read-more:hover { background: var(--accent); }
+  .hero-meta { font-size: 12px; color: var(--ink-faint); margin-top: 12px; }
+  .hero-meta strong { color: var(--ink-light); }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--ink);
+    padding-bottom: 8px;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .section-header .tag {
+    background: var(--accent);
+    color: #fff;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    font-weight: 700;
+  }
+
+  /* ── ARTICLE CARDS ── */
+  .articles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+  .article-card { background: var(--white); border: 1px solid var(--border); }
+  .card-thumb {
+    height: 140px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-thumb-bg {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-cat {
+    position: absolute;
+    bottom: 8px; left: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    font-weight: 700;
+  }
+  .card-body { padding: 14px; }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .card-title a { text-decoration: none; color: inherit; }
+  .card-title a:hover { color: var(--accent); }
+  .card-excerpt { font-size: 13px; color: var(--ink-light); line-height: 1.6; margin-bottom: 10px; }
+  .card-meta { font-size: 11px; color: var(--ink-faint); }
+  .card-meta strong { color: var(--accent); }
+
+  /* ── LIST ARTICLES ── */
+  .articles-list { display: flex; flex-direction: column; gap: 0; }
+  .list-article {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .list-thumb {
+    height: 72px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .list-thumb-bg { width: 100%; height: 100%; }
+  .list-body {}
+  .list-cat { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+  .list-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .list-title:hover { color: var(--accent); }
+  .list-meta { font-size: 11px; color: var(--ink-faint); }
+
+  /* ── SIDEBAR ── */
+  .sidebar { display: flex; flex-direction: column; gap: 28px; }
+
+  .sidebar-widget { background: var(--white); border: 1px solid var(--border); }
+  .widget-header {
+    background: var(--ink);
+    color: var(--white);
+    padding: 10px 16px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .widget-body { padding: 16px; }
+
+  /* Sidebar Ad */
+  .sidebar-ad {
+    background: var(--ad-bg);
+    border: 1.5px dashed var(--border);
+    padding: 16px;
+    text-align: center;
+    position: relative;
+  }
+  .sidebar-ad .ad-label { position: static; display: block; margin-bottom: 10px; }
+  .sidebar-ad-inner {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 20px 16px;
+    border-radius: 3px;
+  }
+  .sidebar-ad-inner h4 { font-size: 15px; margin-bottom: 8px; font-weight: 700; }
+  .sidebar-ad-inner p { font-size: 12px; color: #bbb; margin-bottom: 14px; }
+  .sidebar-ad-btn {
+    display: block;
+    background: var(--gold);
+    color: var(--ink);
+    padding: 9px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-radius: 2px;
+  }
+
+  /* Trending */
+  .trending-item {
+    display: flex; gap: 10px; align-items: start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .trending-item:last-child { border-bottom: none; }
+  .trending-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    min-width: 28px;
+  }
+  .trending-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    line-height: 1.4;
+    display: block;
+  }
+  .trending-title:hover { color: var(--accent); }
+  .trending-cat { font-size: 10px; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+  /* Affiliate Box */
+  .affiliate-box {
+    border: 2px solid var(--gold);
+    background: #fffdf5;
+  }
+  .affiliate-box .widget-header {
+    background: var(--gold);
+    color: var(--ink);
+  }
+  .affiliate-item {
+    display: flex; flex-direction: column; gap: 6px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .affiliate-item:last-child { border-bottom: none; }
+  .aff-name { font-weight: 700; font-size: 14px; color: var(--ink); }
+  .aff-desc { font-size: 12px; color: var(--ink-light); }
+  .aff-stars { color: var(--gold); font-size: 12px; }
+  .aff-link {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  /* Newsletter */
+  .newsletter-box { background: var(--ink); padding: 28px 24px; text-align: center; margin-bottom: 32px; }
+  .newsletter-box h3 {
+    font-family: 'Playfair Display', serif;
+    color: #fff; font-size: 22px; margin-bottom: 6px;
+  }
+  .newsletter-box p { color: #999; font-size: 13px; margin-bottom: 18px; }
+  .newsletter-form { display: flex; gap: 0; max-width: 420px; margin: 0 auto; }
+  .newsletter-form input {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    font-size: 14px;
+    outline: none;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .newsletter-form button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .newsletter-form button:hover { background: var(--accent-dark); }
+
+  /* ── AFFILIATE CONTENT SECTION ── */
+  .affiliate-section { background: #fffdf5; border: 2px solid var(--gold); padding: 24px; margin-bottom: 32px; }
+  .affiliate-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+  .affiliate-section .sub { font-size: 12px; color: var(--ink-faint); margin-bottom: 20px; }
+  .affiliate-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .aff-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 16px;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .aff-icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+  .aff-card h4 { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .aff-card p { font-size: 12px; color: var(--ink-light); }
+  .aff-card .stars { color: var(--gold); font-size: 12px; }
+  .aff-card .price { font-size: 18px; font-weight: 700; color: var(--accent); }
+  .aff-card a.btn {
+    display: block; width: 100%;
+    background: var(--ink); color: #fff;
+    text-decoration: none;
+    padding: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .aff-card a.btn:hover { background: var(--accent); }
+  .aff-disclaimer { font-size: 10px; color: var(--ink-faint); margin-top: 12px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: #888;
+    padding: 40px 16px 20px;
+    margin-top: 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto 32px;
+  }
+  .footer-brand .brand { font-family: 'Playfair Display', serif; font-size: 28px; color: #fff; font-weight: 900; }
+  .footer-brand .brand span { color: var(--accent); }
+  .footer-brand p { font-size: 13px; margin-top: 10px; line-height: 1.7; }
+  footer h4 { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #bbb; margin-bottom: 14px; font-weight: 700; }
+  footer ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  footer ul li a { color: #888; text-decoration: none; font-size: 13px; }
+  footer ul li a:hover { color: #fff; }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 8px;
+    font-size: 11px;
+  }
+  .footer-bottom a { color: #888; text-decoration: none; }
+  .footer-bottom a:hover { color: #fff; }
+
+  /* BREAKING BAR */
+  .breaking-bar {
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow: hidden;
+  }
+  .breaking-label {
+    background: #fff;
+    color: var(--accent);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+  .breaking-text { animation: slide 20s linear infinite; white-space: nowrap; }
+  @keyframes slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .hero-story { grid-template-columns: 1fr; }
+    .hero-image { min-height: 200px; }
+    .articles-grid { grid-template-columns: 1fr; }
+    .affiliate-cards { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    nav a { padding: 10px 12px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  Sunday, April 20, 2026 &nbsp;|&nbsp; <span>Breaking:</span> Markets surge on tech earnings beat &nbsp;|&nbsp; Subscribe for exclusive insights
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="site-tagline">Trusted News & Analysis</div>
+  <div class="site-title">The Daily <span>Pulse</span></div>
+  <div class="site-date">Sunday, April 20, 2026 &nbsp;·&nbsp; Est. 2024</div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="active">Home</a>
+  <a href="#">World</a>
+  <a href="#">Politics</a>
+  <a href="#">Business</a>
+  <a href="#">Technology</a>
+  <a href="#">Health</a>
+  <a href="#">Science</a>
+  <a href="#">Lifestyle</a>
+  <a href="#">Deals</a>
+</nav>
+
+<!-- BREAKING NEWS BAR -->
+<div class="breaking-bar">
+  <span class="breaking-label">Breaking</span>
+  <span class="breaking-text">
+    Global markets hit record highs &nbsp;·&nbsp; UN Climate Summit reaches landmark agreement &nbsp;·&nbsp; New AI breakthrough in medical imaging &nbsp;·&nbsp; Kenya's GDP growth surpasses projections &nbsp;·&nbsp; SpaceX announces crewed Mars mission timeline &nbsp;·&nbsp; Global markets hit record highs &nbsp;·&nbsp; UN Climate Summit reaches landmark agreement &nbsp;·&nbsp; New AI breakthrough in medical imaging
+  </span>
+</div>
+
+<!-- LEADERBOARD AD -->
+<div class="ad-banner">
+  <span class="ad-label">Advertisement</span>
+  <div class="ad-banner-inner">
+    <div>
+      <div style="font-size:12px;color:#aaa;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase;">Sponsored</div>
+      <div>🚀 Grow Your Business Online — Free Website Hosting for 1 Year</div>
+    </div>
+    <a href="#" class="ad-cta">Claim Offer →</a>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+  <div class="layout">
+
+    <!-- MAIN COLUMN -->
+    <main>
+
+      <!-- HERO STORY -->
+      <div class="section-header">
+        <h2>Top Story</h2>
+        <span class="tag">Editor's Pick</span>
+      </div>
+      <div class="hero-story">
+        <div class="hero-image">
+          <span class="hero-category-badge">World Affairs</span>
+          <div class="hero-visual-text">2026</div>
+        </div>
+        <div class="hero-content">
+          <div class="hero-label">Breaking Analysis</div>
+          <h1 class="hero-title">Global Tech Sector Defies Recession Fears as AI Investment Surges</h1>
+          <p class="hero-excerpt">Major technology firms reported record earnings this quarter, fuelled by unprecedented investment in artificial intelligence infrastructure across emerging markets, including East Africa.</p>
+          <a href="#" class="read-more">Read Full Story</a>
+          <div class="hero-meta">By <strong>Sarah Kimani</strong> &nbsp;·&nbsp; April 20, 2026 &nbsp;·&nbsp; 5 min read</div>
+        </div>
+      </div>
+
+      <!-- LATEST NEWS GRID -->
+      <div class="section-header">
+        <h2>Latest News</h2>
+        <span class="tag">Today</span>
+      </div>
+      <div class="articles-grid">
+
+        <div class="article-card">
+          <div class="card-thumb">
+            <div class="card-thumb-bg" style="background:linear-gradient(135deg,#1d3557,#457b9d);"></div>
+            <span class="card-cat">Politics</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title"><a href="#">East African Leaders Convene for Historic Trade Summit in Nairobi</a></h3>
+            <p class="card-excerpt">Heads of state from six nations gather to finalise a landmark single-market framework...</p>
+            <div class="card-meta"><strong>Politics</strong> · 2 hrs ago · 4 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card">
+          <div class="card-thumb">
+            <div class="card-thumb-bg" style="background:linear-gradient(135deg,#134e4a,#0d9488);"></div>
+            <span class="card-cat">Health</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title"><a href="#">WHO Approves Groundbreaking Malaria Vaccine for Sub-Saharan Africa</a></h3>
+            <p class="card-excerpt">The approval marks a watershed moment in the decades-long fight against one of the world's deadliest diseases...</p>
+            <div class="card-meta"><strong>Health</strong> · 4 hrs ago · 3 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card">
+          <div class="card-thumb">
+            <div class="card-thumb-bg" style="background:linear-gradient(135deg,#3d1a78,#7c3aed);"></div>
+            <span class="card-cat">Technology</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title"><a href="#">Africa's Fintech Boom: Mobile Payments Hit $1 Trillion Milestone</a></h3>
+            <p class="card-excerpt">M-Pesa and rival platforms report combined transaction volumes exceeding a trillion dollars for the first time...</p>
+            <div class="card-meta"><strong>Technology</strong> · 6 hrs ago · 5 min read</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MID-PAGE AD -->
+      <div class="ad-banner" style="margin: 0 0 32px;">
+        <span class="ad-label">Advertisement</span>
+        <div class="ad-banner-inner" style="background:linear-gradient(135deg,#0f4c75,#1b262c);">
+          <div>
+            <div style="font-size:12px;color:#aaa;margin-bottom:4px;">Sponsored · Technology</div>
+            <div>Compare the best laptops of 2026 — Exclusive reader discounts inside</div>
+          </div>
+          <a href="#" class="ad-cta">View Deals →</a>
+        </div>
+      </div>
+
+      <!-- MORE STORIES LIST -->
+      <div class="section-header">
+        <h2>More Stories</h2>
+      </div>
+      <div class="articles-list">
+
+        <div class="list-article">
+          <div class="list-thumb">
+            <div class="list-thumb-bg" style="background:linear-gradient(135deg,#78350f,#d97706);"></div>
+          </div>
+          <div class="list-body">
+            <div class="list-cat">Business</div>
+            <a href="#" class="list-title">Kenya's Nairobi Stock Exchange Records Best Quarter in a Decade</a>
+            <div class="list-meta">April 20, 2026 &nbsp;·&nbsp; 3 min read</div>
+          </div>
+        </div>
+
+        <div class="list-article">
+          <div class="list-thumb">
+            <div class="list-thumb-bg" style="background:linear-gradient(135deg,#064e3b,#10b981);"></div>
+          </div>
+          <div class="list-body">
+            <div class="list-cat">Environment</div>
+            <a href="#" class="list-title">Kenya to Plant 15 Billion Trees by 2030: Government Pledges Bold Green Policy</a>
+            <div class="list-meta">April 20, 2026 &nbsp;·&nbsp; 4 min read</div>
+          </div>
+        </div>
+
+        <div class="list-article">
+          <div class="list-thumb">
+            <div class="list-thumb-bg" style="background:linear-gradient(135deg,#1e1b4b,#4f46e5);"></div>
+          </div>
+          <div class="list-body">
+            <div class="list-cat">Science</div>
+            <a href="#" class="list-title">Researchers in Nairobi Develop AI Tool to Predict Flash Floods 72 Hours Early</a>
+            <div class="list-meta">April 19, 2026 &nbsp;·&nbsp; 5 min read</div>
+          </div>
+        </div>
+
+        <div class="list-article">
+          <div class="list-thumb">
+            <div class="list-thumb-bg" style="background:linear-gradient(135deg,#831843,#db2777);"></div>
+          </div>
+          <div class="list-body">
+            <div class="list-cat">Lifestyle</div>
+            <a href="#" class="list-title">The Rise of Nairobi's Café Culture: Where to Work and Eat in 2026</a>
+            <div class="list-meta">April 19, 2026 &nbsp;·&nbsp; 6 min read</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- NEWSLETTER -->
+      <div class="newsletter-box" style="margin-top:32px;">
+        <h3>Get the Daily Pulse</h3>
+        <p>Join 50,000+ readers. Delivered every morning at 7 AM.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your email address" />
+          <button type="button">Subscribe</button>
+        </div>
+      </div>
+
+      <!-- AFFILIATE PRODUCTS SECTION -->
+      <div class="affiliate-section">
+        <h2>⭐ Recommended Products & Deals</h2>
+        <div class="sub">*These are affiliate links. We earn a small commission at no extra cost to you — it helps fund our journalism.</div>
+        <div class="affiliate-cards">
+
+          <div class="aff-card">
+            <div class="aff-icon" style="background:#e0f2fe;">💻</div>
+            <h4>MacBook Air M3</h4>
+            <div class="stars">★★★★★</div>
+            <p>Best lightweight laptop for creators and professionals in 2026.</p>
+            <div class="price">From $1,099</div>
+            <a href="#" class="btn">Check Price →</a>
+          </div>
+
+          <div class="aff-card">
+            <div class="aff-icon" style="background:#dcfce7;">📚</div>
+            <h4>Kindle Unlimited</h4>
+            <div class="stars">★★★★☆</div>
+            <p>Unlimited reading on any device. Thousands of titles, one subscription.</p>
+            <div class="price">$9.99/month</div>
+            <a href="#" class="btn">Start Free Trial →</a>
+          </div>
+
+          <div class="aff-card">
+            <div class="aff-icon" style="background:#fef9c3;">🔐</div>
+            <h4>NordVPN</h4>
+            <div class="stars">★★★★★</div>
+            <p>Protect your privacy online. #1 rated VPN for speed and security.</p>
+            <div class="price">From $3.29/mo</div>
+            <a href="#" class="btn">Get 63% Off →</a>
+          </div>
+
+        </div>
+        <div class="aff-disclaimer">Disclaimer: As an affiliate partner, The Daily Pulse may earn a commission from qualifying purchases. This does not affect our editorial independence.</div>
+      </div>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- SIDEBAR AD -->
+      <div class="sidebar-ad">
+        <span class="ad-label">Advertisement</span>
+        <div class="sidebar-ad-inner">
+          <h4>Trade Smarter in 2026</h4>
+          <p>Open a free account and get Ksh 500 bonus credit on your first deposit.</p>
+          <a href="#" class="sidebar-ad-btn">Open Free Account →</a>
+        </div>
+      </div>
+
+      <!-- TRENDING -->
+      <div class="sidebar-widget">
+        <div class="widget-header">Trending Now</div>
+        <div class="widget-body">
+          <div class="trending-item">
+            <div class="trending-num">01</div>
+            <div>
+              <a href="#" class="trending-title">Global markets surge on AI earnings beat</a>
+              <div class="trending-cat">Business</div>
+            </div>
+          </div>
+          <div class="trending-item">
+            <div class="trending-num">02</div>
+            <div>
+              <a href="#" class="trending-title">WHO malaria vaccine: what you need to know</a>
+              <div class="trending-cat">Health</div>
+            </div>
+          </div>
+          <div class="trending-item">
+            <div class="trending-num">03</div>
+            <div>
+              <a href="#" class="trending-title">East Africa single market: winners & losers</a>
+              <div class="trending-cat">Politics</div>
+            </div>
+          </div>
+          <div class="trending-item">
+            <div class="trending-num">04</div>
+            <div>
+              <a href="#" class="trending-title">Best smartphones under Ksh 50,000 in 2026</a>
+              <div class="trending-cat">Technology</div>
+            </div>
+          </div>
+          <div class="trending-item">
+            <div class="trending-num">05</div>
+            <div>
+              <a href="#" class="trending-title">How to invest your first Ksh 10,000</a>
+              <div class="trending-cat">Business</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AFFILIATE SIDEBAR -->
+      <div class="sidebar-widget affiliate-box">
+        <div class="widget-header">Top Picks — Earn More</div>
+        <div class="widget-body">
+
+          <div class="affiliate-item">
+            <div class="aff-name">Hostinger Hosting</div>
+            <div class="aff-stars">★★★★★</div>
+            <div class="aff-desc">Launch your own blog for just $2.99/mo. Free domain included.</div>
+            <a href="#" class="aff-link">Get Deal →</a>
+          </div>
+
+          <div class="affiliate-item">
+            <div class="aff-name">Canva Pro</div>
+            <div class="aff-stars">★★★★☆</div>
+            <div class="aff-desc">Design graphics, posts & presentations easily. 30-day free trial.</div>
+            <a href="#" class="aff-link">Try Free →</a>
+          </div>
+
+          <div class="affiliate-item">
+            <div class="aff-name">Coursera Plus</div>
+            <div class="aff-stars">★★★★★</div>
+            <div class="aff-desc">Unlock 7,000+ courses from top universities. Advance your career.</div>
+            <a href="#" class="aff-link">Enroll Now →</a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SECOND SIDEBAR AD -->
+      <div class="sidebar-ad">
+        <span class="ad-label">Advertisement</span>
+        <div class="sidebar-ad-inner" style="background:linear-gradient(135deg,#14532d,#15803d);">
+          <h4>Solar Panels — Save 40%</h4>
+          <p>Kenya's #1 solar provider. Flexible payment plans. Free site survey.</p>
+          <a href="#" class="sidebar-ad-btn">Get Free Quote →</a>
+        </div>
+      </div>
+
+      <!-- TOPICS -->
+      <div class="sidebar-widget">
+        <div class="widget-header">Browse Topics</div>
+        <div class="widget-body" style="display:flex;flex-wrap:wrap;gap:8px;">
+          <a href="#" style="background:var(--paper);border:1px solid var(--border);padding:5px 12px;font-size:12px;text-decoration:none;color:var(--ink);border-radius:2px;">World</a>
+          <a href="#" style="background:var(--paper);border:1px solid var(--border);padding:5px 12px;font-size:12px;text-decoration:none;color:var(--ink);border-radius:2px;">Politics</a>
+          <a href="#" style="background:var(--paper);border:1px solid var(--border);padding:5px 12px;font-size:12px;text-decoration:none;color:var(--ink);border-radius:2px;">Business</a>
+          <a href="#" style="background:var(--paper);border:1px solid var(--border);padding:5px 12px;font-size:12px;text-decoration:none;color:var(--ink);border-radius:2px;">Tech</a>
+          <a href="#" style="background:var(--paper);border:1px solid var(--border);padding:5px 12px;font-size:12px;text-decoration:none;color:var(--ink);border-radius:2px;">Health</a>
+          <a href="#" style="background:var(--paper);border:1px solid var(--border);padding:5px 12px;font-size:12px;text-decoration:none;color:var(--ink);border-radius:2px;">Science</a>
+          <a href="#" style="background:var(--paper);border:1px solid var(--border);padding:5px 12px;font-size:12px;text-decoration:none;color:var(--ink);border-radius:2px;">Lifestyle</a>
+          <a href="#" style="background:var(--paper);border:1px solid var(--border);padding:5px 12px;font-size:12px;text-decoration:none;color:var(--ink);border-radius:2px;">Environment</a>
+          <a href="#" style="background:var(--paper);border:1px solid var(--border);padding:5px 12px;font-size:12px;text-decoration:none;color:var(--ink);border-radius:2px;">Africa</a>
+          <a href="#" style="background:var(--paper);border:1px solid var(--border);padding:5px 12px;font-size:12px;text-decoration:none;color:var(--ink);border-radius:2px;">Deals</a>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="brand">The Daily <span>Pulse</span></div>
+      <p>Independent news and analysis from across Africa and the world. Trusted by over 50,000 readers daily.</p>
+    </div>
+    <div>
+      <h4>Sections</h4>
+      <ul>
+        <li><a href="#">World News</a></li>
+        <li><a href="#">Business</a></li>
+        <li><a href="#">Technology</a></li>
+        <li><a href="#">Health</a></li>
+        <li><a href="#">Lifestyle</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Advertise</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Newsletter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+        <li><a href="#">Affiliate Disclosure</a></li>
+        <li><a href="#">Corrections</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 The Daily Pulse. All rights reserved.</div>
+    <div>
+      <a href="#">Privacy</a> &nbsp;·&nbsp;
+      <a href="#">Terms</a> &nbsp;·&nbsp;
+      <a href="#">Advertise</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
